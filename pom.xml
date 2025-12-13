@@ -72,33 +72,6 @@
   </dependencies>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <version>3.5.1</version>
-          <extensions>true</extensions>
-          <configuration>
-            <instructions>
-              <_exportcontents>io.cdap.plugin.fastq.*</_exportcontents>
-              <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
-              <Embed-Transitive>true</Embed-Transitive>
-              <Embed-Directory>lib</Embed-Directory>
-              <Include-Resource>{maven-resources}</Include-Resource>
-            </instructions>
-          </configuration>
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <goals>
-                <goal>bundle</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -127,29 +100,37 @@
       
       <!-- 
         OSGi Bundle Plugin: 
-        We use this to generate the MANIFEST.MF. 
+        CRITICAL: This plugin packages the JAR.
+        We explicitly include resources to ensure CDAP finds them.
       -->
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <version>3.5.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <_exportcontents>io.cdap.plugin.fastq.*</_exportcontents>
+            <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
+            <Embed-Transitive>true</Embed-Transitive>
+            <Embed-Directory>lib</Embed-Directory>
+            <!-- 
+              Explicitly map source directories to the JAR root.
+              This guarantees that widgets/*.json and docs/*.md end up in the correct place.
+            -->
+            <!-- <Include-Resource>
+              widgets=src/main/resources/widgets,
+              docs=src/main/resources/docs,
+              icons=src/main/resources/icons
+            </Include-Resource> -->
+          </instructions>
+        </configuration>
         <executions>
           <execution>
-            <id>bundle-manifest</id>
-            <phase>process-classes</phase>
+            <phase>package</phase>
             <goals>
-              <goal>manifest</goal>
+              <goal>bundle</goal>
             </goals>
-            <configuration>
-              <instructions>
-                <_exportcontents>io.cdap.plugin.fastq.*</_exportcontents>
-                <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
-                <Embed-Transitive>true</Embed-Transitive>
-                <Embed-Directory>lib</Embed-Directory>
-                <!-- Explicitly include resources from src/main/resources -->
-                <Include-Resource>{maven-resources}</Include-Resource>
-              </instructions>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -157,7 +138,6 @@
       <!-- 
         JAR Plugin: 
         Packages the artifact using the generated manifest. 
-        This is the standard way to deploy CDAP plugins (as JARs with OSGi manifests).
       -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

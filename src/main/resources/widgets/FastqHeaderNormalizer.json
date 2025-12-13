@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "spec-version": "1.5"
+  },
+  "display-name": "Fastq Header Normalizer",
+  "configuration-groups": [
+    {
+      "label": "Basic Configuration",
+      "properties": [
+        {
+          "widget-type": "textbox",
+          "label": "Sequence Header Field",
+          "name": "sequence_header",
+          "description": "The name of the input field containing the raw FASTQ header."
+        },
+        {
+          "widget-type": "select",
+          "label": "Header Format",
+          "name": "headerFormat",
+          "description": "Select the format of the sequencing machine.",
+          "widget-attributes": {
+            "values": [
+              "Illumina Casava 1.8+",
+              "Legacy Illumina",
+              "Oxford Nanopore",
+              "Auto-Detect"
+            ],
+            "default": "Auto-Detect"
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "widget-type": "schema",
+      "name": "schema"
+    }
+  ]
+}
