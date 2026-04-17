@@ -1,0 +1,7 @@
+{
+  "properties": {"doc.FastqHeaderNormalizer": "# FastqHeaderNormalizer\n\n## Description\nThe **FastqHeaderNormalizer** plugin parses and normalizes FASTQ sequencing headers into a structured schema. It supports multiple header formats including Illumina Casava 1.8+, Legacy Illumina, and Oxford Nanopore.\n\n## Configuration\n\n| Property | Type | Description |\n|Str|Str|Str|\n| **headerFormat** | String | The expected format of the FASTQ header. Options: `Auto-Detect`, `Illumina Casava 1.8+`, `Legacy Illumina`, `Oxford Nanopore`. Defaults to `Auto-Detect`. |\n| **sequence_header** | String | The name of the input field containing the FASTQ header string. Defaults to `sequence_header`. |\n\n## Example\nThis plugin transforms a raw header string into structured fields.\n\n**Input Record:**\n```json\n{\n  \"sequence_header\": \"@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG\"\n}\n```\n\n**Output Record:**\n```json\n{\n  \"original_header\": \"@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG\",\n  \"instrument_id\": \"EAS139\",\n  \"run_id\": \"136\",\n  \"flowcell_id\": \"FC706VJ\",\n  \"lane\": 2,\n  \"tile\": 2104,\n  \"x_pos\": 15343,\n  \"y_pos\": 197393,\n  \"read_num\": 1,\n  \"is_filtered\": true,\n  \"control_num\": 18,\n  \"index_sequence\": \"ATCACG\",\n  \"is_malformed\": false\n}\n```\n"},
+  "parents": [
+    "system:cdap-data-pipeline[6.0.0,7.0.0-SNAPSHOT)",
+    "system:cdap-data-streams[6.0.0,7.0.0-SNAPSHOT)"
+  ]
+}

@@ -6,7 +6,7 @@
 
   <groupId>io.cdap.plugin</groupId>
   <artifactId>fastqheadernormalizer</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Fastq Header Normalizer Plugin</name>
@@ -114,22 +114,14 @@
             <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
             <Embed-Transitive>true</Embed-Transitive>
             <Embed-Directory>lib</Embed-Directory>
-            <!-- 
-              Explicitly map source directories to the JAR root.
-              This guarantees that widgets/*.json and docs/*.md end up in the correct place.
-            -->
-            <!-- <Include-Resource>
-              widgets=src/main/resources/widgets,
-              docs=src/main/resources/docs,
-              icons=src/main/resources/icons
-            </Include-Resource> -->
-          </instructions>
+            </instructions>
         </configuration>
         <executions>
           <execution>
-            <phase>package</phase>
+            <id>bundle-manifest</id>
+            <phase>process-classes</phase>
             <goals>
-              <goal>bundle</goal>
+              <goal>manifest</goal>
             </goals>
           </execution>
         </executions>
